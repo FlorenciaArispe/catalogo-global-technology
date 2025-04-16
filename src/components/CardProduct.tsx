@@ -1,120 +1,158 @@
 import {
-    Avatar,
-    Button,
-    Card,
-    CardHeader,
-    CardBody,
-    CardFooter,
-    Heading,
-    Text,
-    Stack,
-    Image,
-    Box,
-    HStack,
-    Badge,
-    IconButton,
-  } from "@chakra-ui/react";
-  import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-  import { useState } from "react";
-import { Producto } from "../types";
-  
-  const mockImages = [
-    "https://picsum.photos/id/102/600/400",
-    "https://picsum.photos/id/103/600/400",
-    "https://picsum.photos/id/104/600/400",
-  ];
-  
-  export const CardProduct = ({producto} : Producto) => {
-    const [current, setCurrent] = useState(0);
-  
-    const nextImage = () =>
-      setCurrent((prev) => (prev + 1) % mockImages.length);
-    const prevImage = () =>
-      setCurrent((prev) =>
-        prev === 0 ? mockImages.length - 1 : prev - 1
-      );
-  
-    return (
-      <Card
-        direction={{ base: "column", sm: "row" }}
-        overflow="hidden"
-        maxW="xl"
-        bg="rgba(255, 255, 255, 0.05)"
-        backdropFilter="blur(10px)"
-        border="1px solid"
-        borderColor="whiteAlpha.200"
-        boxShadow="0 8px 30px rgba(32, 32, 32, 0.3)"
-        borderRadius="md"
-      >
-        <Box position="relative" maxW={{ base: "100%", sm: "200px" }}>
-          <Image
-            objectFit="cover"
-            src={mockImages[current]}
-            alt={`Imagen ${current + 1}`}
-            height="100%"
-            width="100%"
-          />
-        <IconButton
-  icon={<ChevronLeftIcon boxSize={6} />} // aumenta el tamaño del ícono
-  position="absolute"
-  top="50%"
-  left="8px"
-  transform="translateY(-50%)"
-  size="md"
-  onClick={prevImage}
-  aria-label="Imagen anterior"
-  bg="whiteAlpha.300"
-  color="white"
-  _hover={{ bg: "whiteAlpha.500" }}
-  _active={{ bg: "whiteAlpha.600" }}
-  borderRadius="full"
-  boxShadow="md"
-/>
+  Heading,
+  Text,
+  Box,
+  HStack,
+  Badge,
+  IconButton,
+  Image,
+  CardBody,
+  Card,
+  VStack,
+} from "@chakra-ui/react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { useState } from "react";
+import { Modelo, Producto } from "../types";
 
-<IconButton
-  icon={<ChevronRightIcon boxSize={6} />}
-  position="absolute"
-  top="50%"
-  right="8px"
-  transform="translateY(-50%)"
-  size="md"
-  onClick={nextImage}
-  aria-label="Imagen siguiente"
-  bg="whiteAlpha.300"
-  color="white"
-  _hover={{ bg: "whiteAlpha.500" }}
-  _active={{ bg: "whiteAlpha.600" }}
-  borderRadius="full"
-  boxShadow="md"
-/>
+const mockImages = ["/iphoneDefault.jpg"];
 
-        </Box>
-  
-        <Box flex="1">
-          <CardBody>
-            <Heading color="white" size="md" mb={2}>
-             {producto.categoria === 3 ? producto.nombre : producto.capacidad + producto.color}
-            </Heading>
-            <Text color="white">
-              Nuevo en caja sellado
-       
-            </Text>
-            <Text color="white">
-             Garantía oficial Apple   
-            </Text>
-            
-            <HStack mt="4">
-            <Badge colorScheme="yellow">${producto.minorista} </Badge>
-              <Badge colorScheme="green">USD</Badge>
-              
-            </HStack>
-          </CardBody>
-  
-          {/* <CardFooter>
-            <Button colorScheme="blue">Buy Latte</Button>
-          </CardFooter> */}
-        </Box>
-      </Card>
-    );
-  };
-  
+export const CardProduct = ({ producto, modelos }: { producto: any; modelos: Modelo[] }) => {
+  const fotos = producto.fotos && producto.fotos.length > 0 ? producto.fotos : mockImages;
+  const [current, setCurrent] = useState(0);
+
+  const nextImage = () => setCurrent((prev) => (prev + 1) % fotos.length);
+  const prevImage = () => setCurrent((prev) => (prev === 0 ? fotos.length - 1 : prev - 1));
+
+
+
+
+  return (
+
+    <>
+
+     <Card
+  direction={{ base: "column", sm: "row" }}
+  overflow="hidden"
+  w={"100%"}
+  bg="rgba(255, 255, 255, 0.05)"
+  backdropFilter="blur(10px)"
+  border="1px solid"
+  borderColor="whiteAlpha.200"
+  boxShadow="0 8px 30px rgba(32, 32, 32, 0.3)"
+  borderRadius="md"
+  h="180px"
+>
+
+  <Box
+    position="relative"
+    w={{ base: "100%", sm: "180px" }}
+    h="100%"
+    overflow="hidden"
+    flexShrink={0}
+  >
+    <Image
+      src={fotos[current]}
+      alt={`Imagen ${current + 1}`}
+      width="100%"
+      height="100%"
+      objectFit="cover"
+      objectPosition="center"
+    />
+
+{fotos.length > 1 && (
+  <>
+    <IconButton
+      icon={<ChevronLeftIcon boxSize={6} />}
+      position="absolute"
+      top="50%"
+      left="8px"
+      transform="translateY(-50%)"
+      size="md"
+      onClick={prevImage}
+      aria-label="Imagen anterior"
+      bg="whiteAlpha.300"
+      color="white"
+      _hover={{ bg: "whiteAlpha.500" }}
+      _active={{ bg: "whiteAlpha.600" }}
+      borderRadius="full"
+      boxShadow="md"
+    />
+
+    <IconButton
+      icon={<ChevronRightIcon boxSize={6} />}
+      position="absolute"
+      top="50%"
+      right="8px"
+      transform="translateY(-50%)"
+      size="md"
+      onClick={nextImage}
+      aria-label="Imagen siguiente"
+      bg="whiteAlpha.300"
+      color="white"
+      _hover={{ bg: "whiteAlpha.500" }}
+      _active={{ bg: "whiteAlpha.600" }}
+      borderRadius="full"
+      boxShadow="md"
+    />
+  </>
+)}
+
+  </Box>
+
+
+  <Box
+    h="140px"
+    my="auto"
+    w={"100%"}
+    display="flex"
+    alignItems="center"
+    justifyContent={"flex-start"}
+  >
+    <CardBody py={0} w="100%">
+  <HStack justify="space-between" align="start" w="100%">
+    <Box     display="flex" flexDirection={"column"}
+    alignItems="flex-start"
+    justifyContent={"flex-start"}>
+      <Heading color="white" size="md" mb={1}>
+        {producto.categoria === 3 ? producto.nombre : producto.modeloNombre}
+      </Heading>
+
+      {producto.categoria === 1 && (
+        <>
+          <Text fontWeight="extrabold" fontSize="20px" color="white">
+            {producto.capacidad}
+          </Text>
+          <Text color="white">Nuevo en caja sellada</Text>
+          <Text color="white">Garantía oficial Apple</Text>
+        </>
+      )}
+
+      {producto.categoria === 2 && (
+        <>
+          <Text fontWeight="extrabold" fontSize="20px" color="white">
+            {producto.capacidad}
+          </Text>
+          <Text color="white">{producto.capacidad}</Text>
+          <Text color="white">Usado premium categoría A</Text>
+        </>
+      )}
+    </Box>
+
+    <Box>
+      <Badge mr={2} colorScheme="yellow" fontSize="md">
+        ${producto.minorista}
+      </Badge>
+      {/* <Badge colorScheme="green" fontSize="md">
+        {producto.categoria === 3 && (!producto.nombre.includes("Cabezal") || !producto.nombre.includes("Battery")) ? "ARG" : "USD"}
+      </Badge> */}
+    </Box>
+  </HStack>
+</CardBody>
+
+  </Box>
+
+
+</Card> 
+    </>
+  );
+};

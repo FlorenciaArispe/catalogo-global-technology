@@ -9,4 +9,11 @@ export interface Producto {
     mayorista: number;
     modeloId: number;
     stock: number;
+    fotos: string[];
   }
+
+  export interface Modelo {
+    id: number;
+    nombre: string;
+  }
+  

@@ -65,3 +65,43 @@ body {
   padding: 0.5rem 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+.boton-filtro {
+  background-color: transparent;
+  border: 1px solid #ccc;
+  padding: 8px 16px;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 200px;
+}
+
+.boton-filtro:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.boton-filtro.activo {
+  background-color: white;
+  color: black;
+  font-weight: bold;
+}
+
+.input-buscador {
+  width: 200px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.input-buscador::placeholder {
+  color: #ccc;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
