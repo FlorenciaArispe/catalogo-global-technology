@@ -1,16 +1,9 @@
 import { useEffect, useState } from 'react'
 import supabase from './supabase/supabase.service'
 import { Producto, Modelo } from './types'
-import './App.css'
-import { Box, Stack, Button, Input, Text, Image, Flex, SimpleGrid } from '@chakra-ui/react'
-import { isValidMotionProp, motion } from "framer-motion";
-import { chakra } from "@chakra-ui/react";
+import { Box, Stack, Button, Image, Flex, SimpleGrid } from '@chakra-ui/react'
 import Nav from './components/Nav'
 import { CardProduct } from './components/CardProduct'
-
-const MotionHeading = chakra(motion.h1, {
-  shouldForwardProp: (prop) => isValidMotionProp(prop) || prop === "children",
-});
 
 function App() {
   const [productos, setProductos] = useState<Producto[]>([])
@@ -26,7 +19,6 @@ function App() {
       const { data: modelosData, error: errorModelos } = await supabase
         .from("Modelo_celular")
         .select();
-         console.log(modelosData)
 
       if (errorModelos) {
         console.error('Error al cargar modelos:', errorModelos);
@@ -43,7 +35,6 @@ function App() {
       const { data: productosData, error: errorProductos } = await supabase
         .from('productos')
         .select('*');
-        console.log(productosData)
 
       if (errorProductos) {
         console.error('Error al cargar productos:', errorProductos);
@@ -64,7 +55,6 @@ function App() {
     fetchModelosYProductos();
   }, []);
 
-
   const productosFiltrados = (filtro === 'todos' ? productos :
     filtro === 'nuevos' ? nuevos :
       filtro === 'usados' ? usados :
@@ -79,122 +69,106 @@ function App() {
     );
   });
 
-
   return (
     <>
       <Nav />
-      <div className="fondo-bg" />
-      <div className="contenedor">
-        
+      <Box bg="rgb(248, 248, 248)" minHeight="100vh" >
         {/* Imagen arriba de todo */}
         <Image 
-          src="/images/portada.jpeg" 
+          src="/images/portada2.png" 
           alt="Imagen descriptiva"
+          objectFit="cover"
+          w="100%"  
          
-          objectFit="cover" // Hace que la imagen cubra el área
-          w="100%"  // Asegura que la imagen tenga un ancho completo en móvil
         />
 
-        <Stack direction="column" spacing={4} p={4}>
+       <Stack direction="column" spacing={4} p={4}>
           <Flex direction="row" justify="space-between" align="center" wrap="wrap">
+            {/* Botón Todos */}
             <Button 
               fontWeight={300}
               fontSize={"15px"}
-              variant="outline" 
-              color="white" 
-              bg="transparent"
-              borderColor="#ccc"
+              variant={filtro === 'todos' ? 'solid' : 'outline'} // Cambia el fondo si está seleccionado
+              color={'gray.600'}
+              bg={filtro === 'todos' ? '#ccc' : 'transparent'}
+              borderColor={filtro === 'todos' ? 'gray.100' : '#ccc'}
               onClick={() => setFiltro('todos')} 
               flex="1" 
-              
               _hover={{ borderColor: 'white' }}
               _active={{ borderColor: 'white' }}
-              className={filtro === 'todos' ? 'activo' : ''}
             >
               Todos
             </Button>
+
+            {/* Botón Sellados */}
             <Button 
-             fontWeight={300}
-                 fontSize={"15px"}
-              variant="outline" 
-              color="white" 
-              bg="transparent"
-              borderColor="#ccc"
+              fontWeight={300}
+              fontSize={"15px"}
+              variant={filtro === 'nuevos' ? 'solid' : 'outline'}
+              color={'gray.600'}
+              bg={filtro === 'nuevos' ? '#ccc' : 'transparent'}
+              borderColor={filtro === 'nuevos' ? 'gray.100' : '#ccc'}
               onClick={() => setFiltro('nuevos')} 
               flex="1" 
               m={1}
               _hover={{ borderColor: 'white' }}
               _active={{ borderColor: 'white' }}
-              className={filtro === 'nuevos' ? 'activo' : ''}
             >
               Sellados
             </Button>
+
+            {/* Botón Usados */}
             <Button 
-             fontWeight={300}
-                 fontSize={"15px"}
-              variant="outline" 
-              color="white" 
-              bg="transparent"
-              borderColor="#ccc"
+              fontWeight={300}
+              fontSize={"15px"}
+              variant={filtro === 'usados' ? 'solid' : 'outline'}
+             color={'gray.600'}
+              bg={filtro === 'usados' ? '#ccc' : 'transparent'}
+              borderColor={filtro === 'usados' ? 'gray.100' : '#ccc'}
               onClick={() => setFiltro('usados')} 
               flex="1" 
               m={1}
               _hover={{ borderColor: 'white' }}
               _active={{ borderColor: 'white' }}
-              className={filtro === 'usados' ? 'activo' : ''}
             >
               Usados
             </Button>
+
+            {/* Botón Accesorios */}
             <Button 
-             fontWeight={300}
-                 fontSize={"15px"}
-              variant="outline" 
-              color="white" 
-              bg="transparent"
-              borderColor="#ccc"
+              fontWeight={300}
+              fontSize={"15px"}
+              variant={filtro === 'accesorios' ? 'solid' : 'outline'}
+             color={'gray.600'}
+              bg={filtro === 'accesorios' ? '#ccc' : 'transparent'}
+              borderColor={filtro === 'accesorios' ? 'gray.100' : '#ccc'}
               onClick={() => setFiltro('accesorios')} 
               flex="1" 
-            
               _hover={{ borderColor: 'white' }}
               _active={{ borderColor: 'white' }}
-              className={filtro === 'accesorios' ? 'activo' : ''}
             >
               Accesorios
             </Button>
           </Flex>
-          
-          {/* <Input 
-            value={busqueda} 
-            onChange={(e) => setBusqueda(e.target.value)} 
-            placeholder="Buscar producto..." 
-            variant="outline" 
-            _focus={{ borderColor: 'blue.500' }}
-            width="full"
-            color="white"
-            borderColor="#ccc"
-            className="input-buscador"
-          /> */}
         </Stack>
 
-
+        {/* Grid de productos */}
         <SimpleGrid 
-        columns={{ base: 2, md: 4 }}  // 2 columnas en dispositivos móviles, 4 en pantallas grandes
-        spacing={6} 
-        p={4}
-      >
-        {productosFiltrados.length === 0 ? (
-          <Box textAlign="center" color="gray.500" fontSize="lg">
-            Producto no encontrado
-          </Box>
-        ) : (
-          productosFiltrados.map((producto) => (
-            <CardProduct key={producto.id} producto={producto} modelos={[]} />
-          ))
-        )}
-      </SimpleGrid>
-
-
-      </div>
+          columns={{ base: 2, md: 4 }}  
+          spacing={4} 
+          p={4}
+        >
+          {productosFiltrados.length === 0 ? (
+            <Box textAlign="center" color="gray.500" fontSize="lg">
+              Producto no encontrado
+            </Box>
+          ) : (
+            productosFiltrados.map((producto) => (
+              <CardProduct key={producto.id} producto={producto} modelos={modelos} />
+            ))
+          )}
+        </SimpleGrid>
+      </Box>
     </>
   )
 }

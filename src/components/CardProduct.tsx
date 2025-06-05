@@ -1,47 +1,59 @@
-import { Box, Stack, Text, Image, Button, SimpleGrid } from '@chakra-ui/react';
+import { Box, Stack, Text, Image, Divider, HStack, Icon } from '@chakra-ui/react';
+import { FaWhatsapp } from 'react-icons/fa';
+import { FiMessageCircle } from 'react-icons/fi';
 
-export const CardProduct = ({ producto, modelos }) => {
+export const CardProduct = ({ producto } : any) => {
   return (
     <Box
       bg="white"
-      boxShadow="lg"
-      borderRadius="8px"
-      height="390px"
+      borderRadius="xl"
+      boxShadow="md"
       overflow="hidden"
-      display="flex"
-      flexDirection="column"
-      justifyContent="space-between"
-      p={4}
+      transition="transform 0.2s"
+      _hover={{ transform: 'scale(1.02)', boxShadow: 'lg' }}
     >
-      {/* Imagen */}
-      <Image 
-        src={producto.imagen} 
-        alt={producto.nombre} 
-        objectFit="cover" 
-        width="100%" 
-        height="45%" 
+      {/* Imagen principal */}
+      <Image
+        src={producto.fotos ? producto.fotos[0] : null}
+        alt={producto.nombre}
+        objectFit="cover"
+        width="100%"
+        height="200px"
+        borderBottom="1px solid #eee"
       />
 
-      {/* Nombre y detalles */}
-      <Text fontWeight="bold" mt={4} color="gray.700">{producto.nombre}</Text>
-      <Text fontSize="sm" color="gray.500">
-        {producto.color} - {producto.capacidad}
-      </Text>
+      {/* Contenido */}
+      <Stack spacing={2} p={4} align="center">
+        <Text fontWeight="bold" fontSize="lg" textAlign="center">
+          {producto.modelo ?? producto.nombre}
+        </Text>
 
-      {/* Precio */}
-      <Text fontSize="xl" fontWeight="bold" color="blue.500" mt={2}>
-        ${producto.precio}
-      </Text>
+        <Text fontSize="sm" color="gray.500">
+          {producto.color} · {producto.capacidad}
+        </Text>
 
-      {/* Botón de consulta */}
-      <Button 
-        mt={4} 
-        colorScheme="blue" 
-        width="full"
-        onClick={() => alert('Consulta realizada!')} 
+        <Text fontSize="xl" fontWeight="bold" color="blue.500">
+          ${producto.minorista}
+        </Text>
+      </Stack>
+
+      {/* Divider y texto de consultar */}
+      <Divider my={2} />
+
+      <HStack
+      justifyContent={"center"}
+        spacing={2}
+        alignItems={"center"}
+        color="gray.700"
+        px={4}
+        pb={3}
+        cursor="pointer"
+        _hover={{ color: "gray.900" }}
+        onClick={() => alert('Consulta realizada!')}
       >
-        Consultar
-      </Button>
+        <Icon as={FaWhatsapp} />
+        <Text fontWeight="medium">Consultar</Text>
+      </HStack>
     </Box>
   );
 };
